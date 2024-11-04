@@ -37,6 +37,7 @@
  */
 void *create_directory_config(apr_pool_t *mp, char *path)
 {
+    assert(mp != NULL);
     directory_config *dcfg = (directory_config *)apr_pcalloc(mp, sizeof(directory_config));
     if (dcfg == NULL) return NULL;
 
@@ -315,6 +316,7 @@ static void copy_rules(apr_pool_t *mp, msre_ruleset *parent_ruleset,
  */
 void *merge_directory_configs(apr_pool_t *mp, void *_parent, void *_child)
 {
+    assert(mp != NULL);
     assert(_parent != NULL);
     assert(_child != NULL);
     directory_config *parent = (directory_config *)_parent;
@@ -1845,6 +1847,7 @@ char *parser_conn_limits_operator(apr_pool_t *mp, const char *p2,
     TreeRoot **whitelist, TreeRoot **suspicious_list,
     const char *filename)
 {
+    assert(mp != NULL);
     assert(p2 != NULL);
     assert(whitelist != NULL);
     assert(suspicious_list != NULL);

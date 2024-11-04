@@ -67,6 +67,7 @@ void ConvertIPNetmask(unsigned char *buffer, unsigned char netmask, unsigned int
 }
 
 TreeNode *CPTCreateNode(apr_pool_t *pool)   {
+    assert(pool != NULL);
     TreeNode *node = NULL;
 
     node = apr_palloc(pool, sizeof(TreeNode));
@@ -79,7 +80,7 @@ TreeNode *CPTCreateNode(apr_pool_t *pool)   {
 }
 
 CPTData *CPTCreateCPTData(unsigned char netmask, apr_pool_t *pool) {
-
+    assert(pool != NULL);
     CPTData *prefix_data = apr_palloc(pool, sizeof(CPTData));
 
     if (prefix_data == NULL) {
@@ -95,7 +96,7 @@ CPTData *CPTCreateCPTData(unsigned char netmask, apr_pool_t *pool) {
 
 TreePrefix *InsertDataPrefix(TreePrefix *prefix, unsigned char *ipdata, unsigned int ip_bitmask,
         unsigned char netmask, apr_pool_t *pool)  {
-
+    assert(pool != NULL);
     if(prefix == NULL)
         return NULL;
 
@@ -112,7 +113,7 @@ TreePrefix *InsertDataPrefix(TreePrefix *prefix, unsigned char *ipdata, unsigned
 
 TreePrefix *CPTCreatePrefix(unsigned char *ipdata, unsigned int ip_bitmask,
         unsigned char netmask, apr_pool_t *pool)  {
-
+    assert(pool != NULL);
     TreePrefix *prefix = NULL;
     int bytes = ip_bitmask/8;
 

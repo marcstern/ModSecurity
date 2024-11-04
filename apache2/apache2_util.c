@@ -178,6 +178,7 @@ int apache2_exec(modsec_rec *msr, const char *command, const char **argv, char *
  * message for the given return code.
  */
 char *get_apr_error(apr_pool_t *p, apr_status_t rc) {
+    assert(p != NULL);
     char *text = apr_pcalloc(p, 201);
     if (text == NULL) return NULL;
     apr_strerror(rc, text, 200);
@@ -353,6 +354,7 @@ void msr_log_warn(modsec_rec *msr, const char *text, ...) {
  * Converts an Apache error log message into one line of text.
  */
 char *format_error_log_message(apr_pool_t *mp, error_message_t *em) {
+    assert(mp != NULL);
     char *s_file = "", *s_line = "", *s_level = "";
     char *s_status = "", *s_message = "";
     char *msg = NULL;

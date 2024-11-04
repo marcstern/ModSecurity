@@ -241,6 +241,8 @@ char *msre_ruleset_phase_rule_update_target_matching_exception(modsec_rec *msr, 
 char *update_rule_target_ex(modsec_rec *msr, msre_ruleset *ruleset, msre_rule *rule, const char *p2,
         const char *p3)   {
     assert(ruleset != NULL);
+    assert(ruleset->engine != NULL);
+    assert(ruleset->engine->variables != NULL);
 
     msre_var **targets = NULL;
     const char *current_targets = NULL;
@@ -566,7 +568,7 @@ static void msre_actionset_cardinality_fixup(msre_actionset *actionset, msre_act
 }
 
 static char *msre_generate_target_string(apr_pool_t *pool, msre_rule *rule)  {
-
+    assert(pool != NULL);
     char *target_str = NULL;
     msre_var **targets = NULL;
     int i = 0;
@@ -597,6 +599,7 @@ static char *msre_generate_target_string(apr_pool_t *pool, msre_rule *rule)  {
 static
 #endif
 char *msre_actionset_generate_action_string(apr_pool_t *pool, const msre_actionset *actionset)  {
+    assert(pool != NULL);
     const apr_array_header_t *tarr = NULL;
     const apr_table_entry_t *telts = NULL;
     char *actions = NULL;
@@ -735,6 +738,7 @@ static apr_status_t msre_parse_targets(msre_ruleset *ruleset, const char *text,
 static apr_status_t msre_parse_actions(msre_engine *engine, apr_pool_t *mp, msre_actionset *actionset,
         const char *text, char **error_msg)
 {
+    assert(mp != NULL);
     const apr_array_header_t *tarr;
     const apr_table_entry_t *telts;
     apr_table_t *vartable;
@@ -805,6 +809,7 @@ static apr_status_t msre_parse_actions(msre_engine *engine, apr_pool_t *mp, msre
  */
 msre_var_metadata *msre_resolve_var(msre_engine *engine, const char *name)
 {
+    assert(engine != NULL);
     return (msre_var_metadata *)apr_table_get(engine->variables, name);
 }
 
@@ -813,6 +818,7 @@ msre_var_metadata *msre_resolve_var(msre_engine *engine, const char *name)
  */
 static msre_action_metadata *msre_resolve_action(msre_engine *engine, const char *name)
 {
+    assert(engine != NULL);
     return (msre_action_metadata *)apr_table_get(engine->actions, name);
 }
 
@@ -823,6 +829,7 @@ static msre_action_metadata *msre_resolve_action(msre_engine *engine, const char
 msre_var *msre_create_var_ex(apr_pool_t *pool, msre_engine *engine, const char *name, const char *param,
         modsec_rec *msr, char **error_msg)
 {
+    assert(pool != NULL);
     // msr can be NULL
     const char *varparam = param;
     msre_var *var = apr_pcalloc(pool, sizeof(msre_var));
@@ -927,6 +934,7 @@ static msre_var *msre_create_var(msre_ruleset *ruleset, const char *name, const 
 msre_action *msre_create_action(msre_engine *engine, apr_pool_t *mp, const char *name, const char *param,
         char **error_msg)
 {
+    assert(mp != NULL);
     msre_action *action = NULL;
 
     if (error_msg == NULL) {
@@ -1004,6 +1012,7 @@ msre_action *msre_create_action(msre_engine *engine, apr_pool_t *mp, const char 
 int msre_parse_generic(apr_pool_t *mp, const char *text, apr_table_t *vartable,
         char **error_msg)
 {
+    assert(mp != NULL);
     char *p = (char *)text;
     int count = 0;
 
@@ -1134,6 +1143,7 @@ int msre_parse_generic(apr_pool_t *mp, const char *text, apr_table_t *vartable,
 msre_actionset *msre_actionset_create(msre_engine *engine, apr_pool_t *mp, const char *text,
         char **error_msg)
 {
+    assert(mp != NULL);
     msre_actionset *actionset = NULL;
 
     if (error_msg == NULL) {
@@ -1209,6 +1219,7 @@ msre_actionset *msre_actionset_create(msre_engine *engine, apr_pool_t *mp, const
  * Create a (shallow) copy of the supplied actionset.
  */
 static msre_actionset *msre_actionset_copy(apr_pool_t *mp, msre_actionset *orig) {
+    assert(mp != NULL);
     msre_actionset *copy = NULL;
 
     if (orig == NULL) return NULL;
@@ -1225,6 +1236,7 @@ static msre_actionset *msre_actionset_copy(apr_pool_t *mp, msre_actionset *orig)
 msre_actionset *msre_actionset_merge(msre_engine *engine, apr_pool_t *mp, msre_actionset *parent,
         msre_actionset *child, int inherit_by_default)
 {
+    assert(mp != NULL);
     msre_actionset *merged = NULL;
     const apr_array_header_t *tarr;
     const apr_table_entry_t *telts;
@@ -1297,6 +1309,7 @@ msre_actionset *msre_actionset_merge(msre_engine *engine, apr_pool_t *mp, msre_a
  * Creates an actionset that contains a default list of actions.
  */
 msre_actionset *msre_actionset_create_default(msre_engine *engine) {
+    assert(engine != NULL);
     char  *my_error_msg = NULL;
     return msre_actionset_create(engine,
             engine->mp,
@@ -1351,6 +1364,7 @@ void msre_actionset_set_defaults(msre_actionset *actionset) {
  * Creates a new engine instance.
  */
 msre_engine *msre_engine_create(apr_pool_t *parent_pool) {
+    // parent_pool may be NULL
     msre_engine *engine;
     apr_pool_t *mp;
 
@@ -1916,6 +1930,7 @@ static apr_status_t msre_ruleset_process_phase_(msre_ruleset *ruleset, modsec_re
  * implementation.
  */
 msre_ruleset *msre_ruleset_create(msre_engine *engine, apr_pool_t *mp) {
+    assert(mp != NULL);
     msre_ruleset *ruleset;
 
     ruleset = apr_pcalloc(mp, sizeof(msre_ruleset));
@@ -2273,6 +2288,7 @@ char *msre_format_metadata(modsec_rec *msr, msre_actionset *actionset) {
 char * msre_rule_generate_unparsed(apr_pool_t *pool,  const msre_rule *rule, const char *targets,
         const char *args, const char *actions)
 {
+    assert(pool != NULL);
     assert(rule != NULL);
     char *unparsed = NULL;
     const char *r_targets = targets;

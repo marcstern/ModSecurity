@@ -776,6 +776,7 @@ static int multipart_boundary_characters_valid(char *boundary) {
 }
 
 static int multipart_count_boundary_params(apr_pool_t *mp, const char *header_value) {
+    assert(mp != NULL);
     char *duplicate = NULL;
     char *s = NULL;
     int count = 0;

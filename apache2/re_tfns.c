@@ -525,6 +525,7 @@ static int msre_fn_urlEncode_execute(apr_pool_t *mptmp, unsigned char *input,
 static int msre_fn_base64Encode_execute(apr_pool_t *mptmp, unsigned char *input,
     long int input_len, char **rval, long int *rval_len)
 {
+    assert(mptmp != NULL);
     *rval_len = apr_base64_encode_len(input_len); /* returns len with NULL byte included */
     *rval = apr_palloc(mptmp, *rval_len);
     apr_base64_encode(*rval, (const char *)input, input_len);
@@ -538,6 +539,7 @@ static int msre_fn_base64Encode_execute(apr_pool_t *mptmp, unsigned char *input,
 static int msre_fn_base64Decode_execute(apr_pool_t *mptmp, unsigned char *input,
     long int input_len, char **rval, long int *rval_len)
 {
+    assert(mptmp != NULL);
     *rval_len = apr_base64_decode_len((const char *)input); /* returns len with NULL byte included */
     *rval = apr_palloc(mptmp, *rval_len);
     *rval_len = apr_base64_decode(*rval, (const char *)input);
@@ -550,6 +552,7 @@ static int msre_fn_base64Decode_execute(apr_pool_t *mptmp, unsigned char *input,
 static int msre_fn_length_execute(apr_pool_t *mptmp, unsigned char *input,
     long int input_len, char **rval, long int *rval_len)
 {
+    assert(mptmp != NULL);
     *rval = apr_psprintf(mptmp, "%ld", input_len);
     *rval_len = strlen(*rval);
 
@@ -561,6 +564,7 @@ static int msre_fn_length_execute(apr_pool_t *mptmp, unsigned char *input,
 static int msre_fn_md5_execute(apr_pool_t *mptmp, unsigned char *input,
     long int input_len, char **rval, long int *rval_len)
 {
+    assert(mptmp != NULL);
     unsigned char digest[APR_MD5_DIGESTSIZE];
 
     apr_md5(digest, input, input_len);
@@ -576,6 +580,7 @@ static int msre_fn_md5_execute(apr_pool_t *mptmp, unsigned char *input,
 static int msre_fn_sha1_execute(apr_pool_t *mptmp, unsigned char *input,
     long int input_len, char **rval, long int *rval_len)
 {
+    assert(mptmp != NULL);
     unsigned char digest[APR_SHA1_DIGESTSIZE];
     apr_sha1_ctx_t context;
 
@@ -789,6 +794,7 @@ static int msre_fn_parityOdd7bit_execute(apr_pool_t *mptmp, unsigned char *input
 */
 static int msre_fn_base64DecodeExt_execute(apr_pool_t *mptmp, unsigned char *input, long int input_len, char **rval, long int *rval_len)
 {
+    assert(mptmp != NULL);
     *rval_len = input_len;
     *rval = apr_palloc(mptmp, *rval_len);
     *rval_len = decode_base64_ext(*rval, (const unsigned char *)input, input_len);

@@ -57,6 +57,7 @@ void *msc_pregcomp_ex(apr_pool_t *pool, const char *pattern, int options,
                       int match_limit, int match_limit_recursion)
 #ifdef WITH_PCRE2
 {
+    assert(pool != NULL);
     msc_regex_t *regex = NULL;
     PCRE2_SPTR pcre2_pattern;
     uint32_t pcre2_options;
@@ -130,6 +131,7 @@ void *msc_pregcomp_ex(apr_pool_t *pool, const char *pattern, int options,
 }
 #else /* not WITH_PCRE2 */
 {
+    assert(pool != NULL);
     const char *errptr = NULL;
     int erroffset;
     msc_regex_t *regex;

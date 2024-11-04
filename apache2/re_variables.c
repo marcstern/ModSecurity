@@ -542,6 +542,7 @@ static int var_request_uri_generate(modsec_rec *msr, msre_var *var, msre_rule *r
 {
     assert(msr != NULL);
     assert(msr->r != NULL);
+    assert(mptmp != NULL);
     char *value = NULL;
 
     if (msr->r->parsed_uri.query == NULL) value = msr->r->parsed_uri.path;
@@ -564,6 +565,7 @@ static int var_reqbody_processor_generate(modsec_rec *msr, msre_var *var, msre_r
     assert(msr != NULL);
     assert(var != NULL);
     assert(vartab != NULL);
+    assert(mptmp != NULL);
     msre_var *rvar = apr_pmemdup(mptmp, var, sizeof(msre_var));
     if (!rvar) {
         msr_log(msr, 1, "REQBODY_PROCESSOR: Memory allocation error");
@@ -855,6 +857,7 @@ static int var_remote_addr_generate(modsec_rec *msr, msre_var *var, msre_rule *r
     if (ap_find_linked_module("mod_remoteip.c") != NULL) {
         assert(msr->r != NULL);
         assert(msr->r->useragent_ip != NULL);
+        assert(msr->mp != NULL);
         if(msr->r->useragent_ip != NULL) msr->remote_addr = apr_pstrdup(msr->mp, msr->r->useragent_ip);
         return var_simple_generate(var, vartab, mptmp, msr->remote_addr);
     }
@@ -882,6 +885,7 @@ static int var_remote_port_generate(modsec_rec *msr, msre_var *var, msre_rule *r
     apr_table_t *vartab, apr_pool_t *mptmp)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     char *value = apr_psprintf(mptmp, "%u", msr->remote_port);
     return var_simple_generate(var, vartab, mptmp, value);
 }
@@ -1007,6 +1011,7 @@ static int var_highest_severity_generate(modsec_rec *msr, msre_var *var, msre_ru
     apr_table_t *vartab, apr_pool_t *mptmp)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     return var_simple_generate(var, vartab, mptmp,
                                apr_psprintf(mptmp, "%d", msr->highest_severity));
 }
@@ -1072,6 +1077,7 @@ static int var_matched_var_generate(modsec_rec *msr, msre_var *var, msre_rule *r
 {
     assert(msr != NULL);
     assert(msr->matched_var != NULL);
+    assert(mptmp != NULL);
     return var_simple_generate_ex(var, vartab, mptmp,
                                   apr_pmemdup(mptmp,
                                       msr->matched_var->value,
@@ -1086,6 +1092,7 @@ static int var_matched_var_name_generate(modsec_rec *msr, msre_var *var, msre_ru
 {
     assert(msr != NULL);
     assert(msr->matched_var != NULL);
+    assert(mptmp != NULL);
     return var_simple_generate_ex(var, vartab, mptmp,
                                   apr_pmemdup(mptmp,
                                       msr->matched_var->name,
@@ -3006,6 +3013,7 @@ static int var_server_port_generate(modsec_rec *msr, msre_var *var, msre_rule *r
     apr_table_t *vartab, apr_pool_t *mptmp)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     char *value = apr_psprintf(mptmp, "%u", msr->local_port);
     if (!value) {
         msr_log(msr, 1, "SERVER_PORT: Memory allocation error");
@@ -3043,6 +3051,7 @@ static int var_script_gid_generate(modsec_rec *msr, msre_var *var, msre_rule *ru
 {
     assert(msr != NULL);
     assert(msr->r != NULL);
+    assert(mptmp != NULL);
     char *value = apr_psprintf(mptmp, "%ld", (long)msr->r->finfo.group);
     if (!value) {
         msr_log(msr, 1, "SCRIPT_GID: Memory allocation error");
@@ -3310,6 +3319,7 @@ static int var_response_status_generate(modsec_rec *msr, msre_var *var, msre_rul
     apr_table_t *vartab, apr_pool_t *mptmp)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     const char *value = apr_psprintf(mptmp, "%u", msr->response_status);
     return var_simple_generate(var, vartab, mptmp, value);
 }
@@ -3331,6 +3341,7 @@ static int var_response_content_length(modsec_rec *msr, msre_var *var, msre_rule
 {
     assert(msr != NULL);
     assert(msr->r != NULL);
+    assert(mptmp != NULL);
     const char *value = apr_psprintf(mptmp, "%" APR_OFF_T_FMT, msr->r->clength);
     return var_simple_generate(var, vartab, mptmp, value);
 }

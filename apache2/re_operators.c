@@ -1579,6 +1579,7 @@ static int msre_op_pm_execute(modsec_rec *msr, msre_rule *rule, msre_var *var, c
  * \retval url On Success
  */
 static const char *gsb_replace_tpath(apr_pool_t *pool, const char *domain, int len)    {
+    assert(pool != NULL);
     assert(domain != NULL);
     char *pos = NULL, *data = NULL;
     char *url = NULL;
@@ -1615,6 +1616,7 @@ static const char *gsb_replace_tpath(apr_pool_t *pool, const char *domain, int l
  * \retval reduced On Success
  */
 static const char *gsb_reduce_char(apr_pool_t *pool, const char *domain) {
+    assert(pool != NULL);
     assert(domain != NULL);
     char *ptr = apr_pstrdup(pool, domain);
     char *data = NULL;

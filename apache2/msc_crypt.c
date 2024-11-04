@@ -150,6 +150,7 @@ char *normalize_path(modsec_rec *msr, char *input) {
  * \retval key random key
  */
 char *getkey(apr_pool_t *mp) {
+    assert(mp != NULL);
     unsigned char digest[APR_SHA1_DIGESTSIZE];
     char *sig, *key, *value;
     apr_sha1_ctx_t ctx;

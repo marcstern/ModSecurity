@@ -103,6 +103,7 @@ static const char *phase_name(int phase) {
  * Creates and initialises a ModSecurity engine instance.
  */
 msc_engine *modsecurity_create(apr_pool_t *mp, int processing_mode) {
+    assert(mp != NULL);
     msc_engine *msce = NULL;
 
     msce = apr_pcalloc(mp, sizeof(msc_engine));
@@ -123,6 +124,7 @@ msc_engine *modsecurity_create(apr_pool_t *mp, int processing_mode) {
 }
 
 int acquire_global_lock(apr_global_mutex_t **lock, apr_pool_t *mp) {
+    assert(mp != NULL);
     apr_status_t rc = apr_global_mutex_create(lock, NULL, APR_LOCK_DEFAULT, mp);
     if (rc != APR_SUCCESS) {
         ap_log_perror(APLOG_MARK, APLOG_ERR, 0, mp, " ModSecurity: Could not create global mutex");
@@ -184,6 +186,8 @@ int msr_global_mutex_unlock(modsec_rec* msr, apr_global_mutex_t* lock, const cha
  * username it is running as.
  */
 int modsecurity_init(msc_engine *msce, apr_pool_t *mp) {
+    assert(mp != NULL);
+    assert(msce != NULL);
     apr_status_t rc;
 
     msce->auditlog_lock = msce->geo_lock = NULL;

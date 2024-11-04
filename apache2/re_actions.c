@@ -54,6 +54,7 @@ msre_var *generate_single_var(modsec_rec *msr, msre_var *var, apr_array_header_t
     msre_rule *rule, apr_pool_t *mptmp)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     apr_table_t *vartab = NULL;
     const apr_table_entry_t *te = NULL;
     const apr_array_header_t *arr = NULL;
@@ -114,6 +115,7 @@ apr_table_t *generate_multi_var(modsec_rec *msr, msre_var *var, apr_array_header
     msre_rule *rule, apr_pool_t *mptmp)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     const apr_array_header_t *tarr;
     const apr_table_entry_t *telts;
     apr_table_t *vartab = NULL, *tvartab = NULL;
@@ -178,6 +180,7 @@ int expand_macros(modsec_rec *msr, msc_string *var, msre_rule *rule, apr_pool_t 
     assert(msr != NULL);
     assert(msr->txcfg != NULL);
     assert(var != NULL);
+    assert(mptmp != NULL);
     char *data = NULL;
     apr_array_header_t *arr = NULL;
     char *p = NULL, *q = NULL, *t = NULL;
@@ -403,6 +406,7 @@ static apr_status_t msre_action_id_init(msre_engine *engine, apr_pool_t *mp, msr
 }
 
 static char *msre_action_id_validate(msre_engine *engine, apr_pool_t *mp, msre_action *action) {
+    assert(mp != NULL);
     int id;
 
     if(action != NULL && action->param != NULL) {
@@ -457,6 +461,7 @@ static apr_status_t msre_action_logdata_init(msre_engine *engine, apr_pool_t *mp
 static apr_status_t msre_action_sanitizeMatchedBytes_init(msre_engine *engine, apr_pool_t *mp,
         msre_actionset *actionset, msre_action *action)
 {
+    assert(mp != NULL);
     assert(actionset != NULL);
     assert(action != NULL);
     char *parse_parm = NULL;
@@ -675,6 +680,8 @@ static apr_status_t msre_action_redirect_execute(modsec_rec *msr, apr_pool_t *mp
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(msr->mp != NULL);
+    assert(mptmp != NULL);
     assert(rule != NULL);
     assert(rule->actionset != NULL);
     assert(action != NULL);
@@ -713,6 +720,8 @@ static apr_status_t msre_action_proxy_execute(modsec_rec *msr, apr_pool_t *mptmp
         msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(msr->mp != NULL);
+    assert(mptmp != NULL);
     assert(rule != NULL);
     assert(action != NULL);
     msc_string *var = NULL;
@@ -801,6 +810,7 @@ static apr_status_t msre_action_allow_init(msre_engine *engine, apr_pool_t *mp, 
 }
 
 static char *msre_action_allow_validate(msre_engine *engine, apr_pool_t *mp, msre_action *action) {
+    assert(mp != NULL);
     assert(action != NULL);
     if (action->param != NULL) {
         if (strcasecmp(action->param, "phase") == 0) {
@@ -863,6 +873,7 @@ static apr_status_t msre_action_t_init(msre_engine *engine, apr_pool_t *mp, msre
 
 /* ctl */
 static char *msre_action_ctl_validate(msre_engine *engine, apr_pool_t *mp, msre_action *action) {
+    assert(mp != NULL);
     assert(action != NULL);
     char *name = NULL;
     char *value = NULL;
@@ -1038,6 +1049,7 @@ static apr_status_t msre_action_ctl_execute(modsec_rec *msr, apr_pool_t *mptmp,
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(msr->mp != NULL);
     assert(action != NULL);
     char *name = NULL;
     char *value = NULL;
@@ -1387,6 +1399,7 @@ static apr_status_t msre_action_ctl_execute(modsec_rec *msr, apr_pool_t *mptmp,
 
 /* xmlns */
 static char *msre_action_xmlns_validate(msre_engine *engine, apr_pool_t *mp, msre_action *action) {
+    assert(mp != NULL);
     assert(action != NULL);
     char *name = NULL;
     char *value = NULL;
@@ -1550,6 +1563,7 @@ static apr_status_t msre_action_setenv_execute(modsec_rec *msr, apr_pool_t *mptm
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     assert(action != NULL);
     assert(action->param != NULL);
     char *data = apr_pstrdup(mptmp, action->param);
@@ -1628,6 +1642,7 @@ static apr_status_t msre_action_setenv_execute(modsec_rec *msr, apr_pool_t *mptm
 apr_status_t msre_action_setvar_execute(modsec_rec *msr, apr_pool_t *mptmp,
     msre_rule *rule, char *var_name, char *var_value)
 {
+    assert(mptmp != NULL);
     assert(msr != NULL);
     assert(var_name != NULL);
     assert(var_value != NULL);
@@ -1819,6 +1834,7 @@ static apr_status_t msre_action_setvar_parse(modsec_rec *msr, apr_pool_t *mptmp,
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     assert(action != NULL);
     assert(action->param != NULL);
     char *data = apr_pstrdup(mptmp, action->param);
@@ -1847,6 +1863,7 @@ static apr_status_t msre_action_expirevar_execute(modsec_rec *msr, apr_pool_t *m
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     assert(action != NULL);
     assert(action->param != NULL);
     char *data = apr_pstrdup(mptmp, action->param);
@@ -1947,6 +1964,7 @@ static apr_status_t msre_action_deprecatevar_execute(modsec_rec *msr, apr_pool_t
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     assert(action != NULL);
     assert(action->param != NULL);
     char *data = apr_pstrdup(mptmp, action->param);
@@ -2221,6 +2239,7 @@ static apr_status_t msre_action_initcol_execute(modsec_rec *msr, apr_pool_t *mpt
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     assert(action != NULL);
     assert(action->param != NULL);
     char *data = apr_pstrdup(msr->mp, action->param);
@@ -2255,6 +2274,7 @@ static apr_status_t msre_action_setsid_execute(modsec_rec *msr, apr_pool_t *mptm
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     assert(action != NULL);
     assert(action->param != NULL);
     msc_string *var = NULL;
@@ -2282,6 +2302,7 @@ static apr_status_t msre_action_setuid_execute(modsec_rec *msr, apr_pool_t *mptm
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     assert(action != NULL);
     assert(action->param != NULL);
     msc_string *var = NULL;
@@ -2309,6 +2330,7 @@ static apr_status_t msre_action_setrsc_execute(modsec_rec *msr, apr_pool_t *mptm
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     assert(action != NULL);
     assert(action->param != NULL);
     msc_string *var = NULL;
@@ -2392,6 +2414,7 @@ static apr_status_t msre_action_prepend_execute(modsec_rec *msr, apr_pool_t *mpt
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     assert(action != NULL);
     assert(action->param != NULL);
     msc_string *var = NULL;
@@ -2415,6 +2438,7 @@ static apr_status_t msre_action_append_execute(modsec_rec *msr, apr_pool_t *mptm
     msre_rule *rule, msre_action *action)
 {
     assert(msr != NULL);
+    assert(mptmp != NULL);
     assert(action != NULL);
     assert(action->param != NULL);
     msc_string *var = NULL;

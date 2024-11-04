@@ -229,6 +229,7 @@ int is_valid_parts_specification(char *p) {
  * audit log entry.
  */
 static char *construct_auditlog_filename(apr_pool_t *mp, const char *uniqueid) {
+    assert(mp != NULL);
     apr_time_exp_t t;
     char tstr[300];
     apr_size_t len;

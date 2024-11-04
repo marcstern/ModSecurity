@@ -104,6 +104,7 @@ int swap_int32(int x) {
  * \retval rval On Success
  */
 char *utf8_unicode_inplace_ex(apr_pool_t *mp, unsigned char *input, long int input_len, int *changed) {
+    assert(mp != NULL);
     int unicode_len = 0, length = 0;
     unsigned int d = 0, count = 0;
     unsigned char c, *utf;
@@ -521,6 +522,7 @@ char *parse_pm_content(const char *op_parm, unsigned short int op_len, msre_rule
  * \retval string On Success
  */
 char *remove_quotes(apr_pool_t *mptmp, const char *input, int input_len)  {
+    assert(mptmp != NULL);
     char *parm = apr_palloc(mptmp, input_len);
     char *ret = parm;
     int len = input_len;
@@ -544,6 +546,7 @@ char *remove_quotes(apr_pool_t *mptmp, const char *input, int input_len)  {
  * \retval string On Success
  */
 char *remove_escape(apr_pool_t *mptmp, const char *input, int input_len)  {
+    assert(mptmp != NULL);
     char *parm = apr_palloc(mptmp, input_len);
     char *ret = parm;
     int len = input_len;
@@ -697,6 +700,7 @@ int set_match_to_tx(modsec_rec *msr, int capture, const char *match, int tx_n)  
  * IMP1 It does not check for whitespace between tokens.
  */
 int parse_name_eq_value(apr_pool_t *mp, const char *input, char **name, char **value) {
+    assert(mp != NULL);
     char *p = NULL;
 
     if ((name == NULL)||(value == NULL)) return -1;
@@ -727,6 +731,7 @@ int parse_name_eq_value(apr_pool_t *mp, const char *input, char **name, char **v
  * IMP1 Assumes NUL-terminated
  */
 char *url_encode(apr_pool_t *mp, char *input, unsigned int input_len, int *changed) {
+    assert(mp != NULL);
     char *rval, *d;
     unsigned int i, len;
 
@@ -817,6 +822,7 @@ char *strnurlencat(char *destination, char *source, unsigned int maxlen) {
  *
  */
 char *file_basename(apr_pool_t *mp, const char *filename) {
+    assert(mp != NULL);
     char *d, *p;
 
     if (filename == NULL) return NULL;
@@ -897,6 +903,7 @@ int inet_pton(int family, const char *src, void *dst)   {
  */
 #ifdef WIN32
 char *file_dirname(apr_pool_t *p, const char *filename) {
+    assert(p != NULL);
     char *b, *c, *d;
 
     if (filename == NULL) return NULL;
@@ -917,6 +924,7 @@ char *file_dirname(apr_pool_t *p, const char *filename) {
 }
 #else
 char *file_dirname(apr_pool_t *p, const char *filename) {
+    assert(p != NULL);
     char *b, *c;
 
     if (filename == NULL) return NULL;
@@ -988,6 +996,7 @@ int hex2bytes_inplace(unsigned char *data, int len) {
  * representation.
  */
 char *bytes2hex(apr_pool_t *pool, unsigned char *data, int len) {
+    assert(pool != NULL);
     static const unsigned char b2hex[] = "0123456789abcdef";
     char *hex = NULL;
     int i, j;
@@ -1094,6 +1103,7 @@ static unsigned char xsingle2c(unsigned char *what) {
  *
  */
 char *guess_tmp_dir(apr_pool_t *p) {
+    assert(p != NULL);
     char *filename = NULL;
 
     /* ENH Use apr_temp_dir_get instead. */
@@ -1126,6 +1136,7 @@ char *guess_tmp_dir(apr_pool_t *p) {
  *
  */
 char *current_logtime(apr_pool_t *mp) {
+    assert(mp != NULL);
     apr_time_exp_t t;
     char tstr[100];
     apr_size_t len;
@@ -1145,6 +1156,7 @@ char *current_logtime(apr_pool_t *mp) {
  *
  */
 char *current_filetime(apr_pool_t *mp) {
+    assert(mp != NULL);
     apr_time_exp_t t;
     char tstr[100];
     apr_size_t len;
@@ -1260,6 +1272,7 @@ char *log_escape_nq_ex(apr_pool_t *mp, const char *text, unsigned long int text_
 }
 
 char *log_escape_raw(apr_pool_t *mp, const unsigned char *text, unsigned long int text_length) {
+    assert(mp != NULL);
     unsigned char *ret = apr_palloc(mp, text_length * 4 + 1);
     unsigned long int i, j;
 
@@ -1274,6 +1287,7 @@ char *log_escape_raw(apr_pool_t *mp, const unsigned char *text, unsigned long in
 }
 
 char *log_escape_nul(apr_pool_t *mp, const unsigned char *text, unsigned long int text_length) {
+    assert(mp != NULL);
     unsigned char *ret = apr_palloc(mp, text_length * 4 + 1);
     unsigned long int i, j;
 
@@ -1298,6 +1312,7 @@ char *log_escape_nul(apr_pool_t *mp, const unsigned char *text, unsigned long in
  * Transform text to ASCII printable or hex escaped
  */
 char *log_escape_hex(apr_pool_t *mp, const unsigned char *text, unsigned long int text_length) {
+    assert(mp != NULL);
     unsigned char *ret = apr_palloc(mp, text_length * 4 + 1);
     unsigned long int i, j;
 
@@ -1328,6 +1343,7 @@ char *log_escape_hex(apr_pool_t *mp, const unsigned char *text, unsigned long in
 static char *_log_escape(apr_pool_t *mp, const unsigned char *input, unsigned long int input_len,
         int escape_quotes, int escape_colon, int escape_re)
 {
+    assert(mp != NULL);
     unsigned char *d = NULL;
     char *ret = NULL;
     unsigned long int i;
@@ -1777,6 +1793,7 @@ int urldecode_nonstrict_inplace_ex(unsigned char *input, long int input_len, int
  * IMP1 Assumes NUL-terminated
  */
 int html_entities_decode_inplace(apr_pool_t *mp, unsigned char *input, int input_len) {
+    assert(mp != NULL);
     unsigned char *d = input;
     int i, count;
 
@@ -2171,6 +2188,7 @@ length:
 }
 
 char *modsec_build(apr_pool_t *mp) {
+    assert(mp != NULL);
     return apr_psprintf(mp, "%02i%02i%02i%1i%02i",
             atoi(MODSEC_VERSION_MAJOR),
             atoi(MODSEC_VERSION_MINOR),
@@ -2194,6 +2212,7 @@ int is_empty_string(const char *string) {
 }
 
 char *resolve_relative_path(apr_pool_t *pool, const char *parent_filename, const char *filename) {
+    assert(pool != NULL);
     if (filename == NULL) return NULL;
     // TODO Support paths on operating systems other than Unix.
     if (filename[0] == '/') return (char *)filename;
@@ -2380,6 +2399,8 @@ apr_fileperms_t mode2fileperms(int mode) {
  */
 char *construct_single_var(modsec_rec *msr, char *name) {
     assert(msr != NULL);
+    assert(msr->mp != NULL);
+    assert(msr->modsecurity != NULL);
     char *varname = NULL;
     char *param = NULL;
     msre_var *var = NULL;
@@ -2488,6 +2509,7 @@ int read_line(char *buf, int len, FILE *fp)
 
 int create_radix_tree(apr_pool_t *mp, TreeRoot **rtree, char **error_msg)
 {
+    assert(mp != NULL);
     *rtree = apr_palloc(mp, sizeof(TreeRoot));
     if (*rtree == NULL)
     {
@@ -2525,6 +2547,7 @@ root_node_failed:
 int ip_tree_from_file(TreeRoot **rtree, char *uri,
     apr_pool_t *mp, char **error_msg)
 {
+    assert(mp != NULL);
     TreeNode *tnode = NULL;
     apr_status_t rc;
     int line = 0;
@@ -2620,6 +2643,7 @@ int ip_tree_from_file(TreeRoot **rtree, char *uri,
 int ip_tree_from_uri(TreeRoot **rtree, char *uri,
     apr_pool_t *mp, char **error_msg)
 {
+    assert(mp != NULL);
     TreeNode *tnode = NULL;
     apr_status_t rc;
     int line = 0;
@@ -2741,6 +2765,7 @@ int tree_contains_ip(apr_pool_t *mp, TreeRoot *rtree,
 int ip_tree_from_param(apr_pool_t *mp,
     char *param, TreeRoot **rtree, char **error_msg)
 {
+    assert(mp != NULL);
     char *saved = NULL;
     char *str = NULL;
     TreeNode *tnode = NULL;
@@ -2840,6 +2865,7 @@ char* strtok_r(
 
 // we cannot log an error message as this happens much too often
 char* get_username(apr_pool_t* mp) {
+    assert(mp != NULL);
     char* username;
     apr_uid_t uid;
     apr_gid_t gid;

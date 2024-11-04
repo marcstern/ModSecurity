@@ -270,6 +270,7 @@ int msc_remote_download_content(apr_pool_t *mp, const char *uri, const char *key
     struct msc_curl_memory_buffer_t *chunk, char **error_msg)
 {
 #ifdef WITH_CURL
+    assert(mp != NULL);
     CURL *curl;
     CURLcode res;
 
@@ -435,6 +436,7 @@ int msc_remote_enc_key_setup(apr_pool_t *pool,
     unsigned char *salt,
     char **error_msg)
 {
+    assert(pool != NULL);
     apr_size_t key_len = strlen(key);
     apr_size_t salt_len = 16; //FIXME: salt_len should not be hard coded.
 

@@ -90,6 +90,7 @@ static int lua_restore(lua_State *L, msc_script *script) {
  *
  */
 char *lua_compile(msc_script **script, const char *filename, apr_pool_t *pool) {
+    assert(mp != NULL);
     lua_State *L = NULL;
     msc_lua_dumpw_t dump;
 

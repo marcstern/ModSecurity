@@ -104,6 +104,7 @@ static int server_limit, thread_limit;
 * \param mp Pointer to memory pool
 */
 static void version(apr_pool_t *mp, server_rec* s) {
+    assert(mp != NULL);
     char *pcre_vrs = NULL;
     const char *pcre_loaded_vrs = NULL;
     char pcre2_loaded_vrs_buffer[80] ={0};
